@@ -1,16 +1,21 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Home from './pages/Home';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
 import Chat from './components/Chat';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
+    <Router>
+      <div className="App">
       <div className="navbar">
         <div className="navbar-link">Vida Life Coach</div>
         <div style={{ marginLeft: 'auto', display: 'flex' }}>
-          <div className="navbar-link">New Chat</div>
-          <div className="navbar-link">Profile</div>
-          <div className="navbar-link">Settings</div>
+          <div className="navbar-link"><Link to="/" className="nav-link">New Chat</Link></div>
+          <div className="navbar-link"><Link to="/profile" className="nav-link">Profile</Link></div>
+          <div className="navbar-link"><Link to="/settings" className="nav-link">Settings</Link></div>
         </div>
       </div>
 
@@ -22,10 +27,13 @@ function App() {
         </div>
       </div>
 
-      <div className="chat-container">
-        <Chat />
+        <Routes>
+          <Route path="/" element={<Chat />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 

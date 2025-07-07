@@ -171,3 +171,18 @@ body {
   margin: 0 auto;
   color: #e0e0e0;
 }
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: #00ffff;
+}
+
+.page-content {
+  padding: 80px 40px;
+  color: white;
+  text-align: center;
+}
