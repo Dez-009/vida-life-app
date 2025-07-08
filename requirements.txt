@@ -7,3 +7,7 @@ pytest
 sqlalchemy
 apscheduler
 fastapi[all]
+python-jose[cryptography]
+passlib[bcrypt]
+pydantic[email]
+python-multipart
