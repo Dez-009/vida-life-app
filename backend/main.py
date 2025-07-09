@@ -5,18 +5,25 @@ from datetime import timedelta
 from sqlalchemy.orm import Session
 
 from backend.models.user import Base, User
-from backend.schemas.user_schema import UserCreate, User as UserSchema, UserLogin, UserProfile
+from backend.schemas.user_schema import (
+    UserCreate,
+    User as UserSchema,
+    UserLogin,
+    UserProfile,
+)
+
 from backend.auth.auth_utils import (
     verify_password, get_password_hash, create_access_token,
     get_current_user, ACCESS_TOKEN_EXPIRE_MINUTES, Token, TokenData
 )
 from backend.database import engine, SessionLocal, get_db
+from backend.routers import agent
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
+app.include_router(agent.router)
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
