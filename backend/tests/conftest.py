@@ -1,5 +1,8 @@
 import sys
 import os
+
+# Ensure tests have a dummy OpenAI key so router import doesn't fail
+os.environ.setdefault("OPENAI_API_KEY", "test-key")
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -49,3 +52,25 @@ def setup_test_db():
     yield
     # Teardown - will be run after each test
     Base.metadata.drop_all(bind=engine)
+
+# --- Helper Fixtures -------------------------------------------------------
+
+@pytest.fixture
+def test_user_data():
+    """Standard user data for authentication-related tests."""
+    return {
+        "email": "test@example.com",
+        "username": "testuser",
+        "password": "testpass123",
+    }
+
+
+@pytest.fixture
+def auth_token(test_client, test_user_data):
+    """Register and log in a user, returning a valid JWT token."""
+    test_client.post("/register", json=test_user_data)
+    response = test_client.post(
+        "/token",
+        data={"username": test_user_data["email"], "password": test_user_data["password"]},
+    )
+    return response.json()["access_token"]

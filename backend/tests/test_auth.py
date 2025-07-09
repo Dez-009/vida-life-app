@@ -3,29 +3,9 @@ from models.user import User
 from database import Base
 
 @pytest.fixture
-def test_user_data():
-    return {
-        "email": "test@example.com",
-        "username": "testuser",
-        "password": "testpass123"
-    }
-
-@pytest.fixture
 def registered_user(test_client, test_user_data):
     response = test_client.post("/register", json=test_user_data)
     return response.json()
-
-@pytest.fixture
-def auth_token(test_client, test_user_data):
-    test_client.post("/register", json=test_user_data)
-    response = test_client.post(
-        "/token",
-        data={
-            "username": test_user_data["email"],
-            "password": test_user_data["password"]
-        }
-    )
-    return response.json()["access_token"]
 
 def test_register_user_success(test_client, test_user_data):
     response = test_client.post("/register", json=test_user_data)
