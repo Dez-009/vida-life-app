@@ -1,14 +1,14 @@
 import os
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-import openai
+from openai import OpenAI
 from dotenv import load_dotenv
 
 from auth.auth_utils import get_current_user, TokenData
 
 # Load environment variables and configure OpenAI
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 router = APIRouter(prefix="/agent", tags=["agent"])
 
@@ -20,12 +20,12 @@ async def chat_with_agent(
     payload: ChatRequest,
     current_user: TokenData = Depends(get_current_user)
 ):
-    """Generate a coaching reply via GPT-4.1."""
-    if not openai.api_key:
+    """Generate a coaching reply via GPT-4."""
+    if not client.api_key:
         raise HTTPException(status_code=500, detail="AI service unavailable")
     try:
-        result = openai.ChatCompletion.create(
-            model="gpt-4.1",
+        result = client.chat.completions.create(
+            model="gpt-4",
             messages=[
                 {
                     "role": "system",
@@ -34,7 +34,9 @@ async def chat_with_agent(
                 {"role": "user", "content": payload.message},
             ],
         )
-        content = result["choices"][0]["message"]["content"].strip()
+        # New OpenAI SDK returns objects, not dictionaries
+        content = result.choices[0].message.content.strip()
         return {"response": content}
-    except openai.error.OpenAIError as e:
+    except Exception as e:
+        # The modern OpenAI SDK uses standard exceptions
         raise HTTPException(status_code=503, detail="AI request failed") from e
