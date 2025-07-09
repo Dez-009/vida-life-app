@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import openai
 from dotenv import load_dotenv
 
-from ..auth.auth_utils import get_current_user, TokenData
+from auth.auth_utils import get_current_user, TokenData
 
 # Load environment variables and configure OpenAI
 load_dotenv()
