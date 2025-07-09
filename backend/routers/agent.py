@@ -36,5 +36,8 @@ async def chat_with_agent(
         )
         content = result["choices"][0]["message"]["content"].strip()
         return {"response": content}
-    except openai.error.OpenAIError as e:
-        raise HTTPException(status_code=503, detail="AI request failed") from e
+    except openai.OpenAIError as e:
+        # Normalize unexpected OpenAI errors into a generic agent error so the
+        # client receives a consistent message. Tests expect a 500 status code
+        # with an "Agent error" detail when OpenAI raises an exception.
+        raise HTTPException(status_code=500, detail="Agent error") from e
