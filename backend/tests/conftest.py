@@ -6,11 +6,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from backend.main import app
-from backend.database import get_db
-from backend.models.user import Base
+from main import app
+from database import get_db
+from models.user import Base
 
 # Use SQLite in-memory database for testing with proper connection settings
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"

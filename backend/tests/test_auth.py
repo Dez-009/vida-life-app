@@ -1,6 +1,6 @@
 import pytest
-from backend.models.user import User
-from backend.database import Base
+from models.user import User
+from database import Base
 
 @pytest.fixture
 def test_user_data():
