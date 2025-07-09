@@ -4,13 +4,13 @@ from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
 from sqlalchemy.orm import Session
 
-from .models.user import Base, User
-from .schemas.user_schema import UserCreate, User as UserSchema, UserLogin, UserProfile
-from .auth.auth_utils import (
+from backend.models.user import Base, User
+from backend.schemas.user_schema import UserCreate, User as UserSchema, UserLogin, UserProfile
+from backend.auth.auth_utils import (
     verify_password, get_password_hash, create_access_token,
     get_current_user, ACCESS_TOKEN_EXPIRE_MINUTES, Token, TokenData
 )
-from .database import engine, SessionLocal, get_db
+from backend.database import engine, SessionLocal, get_db
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
